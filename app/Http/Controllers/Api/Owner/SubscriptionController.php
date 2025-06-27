@@ -20,18 +20,25 @@ class SubscriptionController extends Controller
     }
 
     // Get current user's subscription with plan info
-    public function getSubscription()
-    {
-        $user = Auth::user();
+ public function getSubscription()
+{
+    $user = Auth::user();
 
-        $subscription = Subscription::with('plan')->where('user_id', $user->id)->first();
+    $subscription = Subscription::with('plan')->where('user_id', $user->id)->first();
 
-        if (!$subscription) {
-            return response()->json(null, 200); // no subscription yet
-        }
-
-        return response()->json($subscription, 200);
+    if (!$subscription) {
+        Log::info('No subscription found for user', ['user_id' => $user->id]);
+        return response()->json(null, 200);
     }
+
+    Log::info('Retrieved subscription with plan', [
+        'user_id' => $user->id,
+        'subscription' => $subscription,
+        'plan' => $subscription->plan,
+    ]);
+
+    return response()->json($subscription, 200);
+}
 
     // Subscribe to a plan by plan_id and payment_method
 

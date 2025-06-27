@@ -20,8 +20,7 @@ public function getUser(Request $request)
     $user = Auth::user();
 
     // Eager load subscription relation (adjust relation name as needed)
-    $user->load('subscription');
-
+    $user->load('subscription.plan'); // 👈 important!
     Log::info('Authenticated User:', ['user' => $user]);
 
     return response()->json([
@@ -55,6 +54,8 @@ public function register(Request $request)
             'role' => $request->role,
             'phone' => $request->role === 'owner' ? $request->phone : null,
         ]);
+
+        
 
         Log::info('User created successfully', ['user_id' => $user->id]);
     } catch (\Exception $e) {

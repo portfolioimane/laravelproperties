@@ -10,12 +10,16 @@ class OwnersController extends Controller
     /**
      * Get all owners (users with role = 'owner')
      */
-    public function index()
-    {
-        $owners = User::where('role', 'owner')->get();
+ public function index()
+{
+    // Retrieve users with role 'owner' AND load their subscription relationship eagerly
+  $owners = User::with(['subscription.plan'])
+              ->where('role', 'owner')
+              ->get();
 
-        return response()->json($owners);
-    }
+    return response()->json($owners);
+}
+
 
     /**
      * Create a new owner
