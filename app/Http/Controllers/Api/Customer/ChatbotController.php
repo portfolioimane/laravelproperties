@@ -43,13 +43,11 @@ class ChatbotController extends Controller
             ];
         });
 
-        // Prepare payload for FastAPI backend
         $payload = [
             'message' => $userMessage,
             'properties' => $properties,
         ];
 
-        // Call AI chatbot backend with message + properties
         $response = Http::post('http://localhost:8000/chat', $payload);
 
         if ($response->failed()) {
