@@ -20,7 +20,7 @@ class ChatbotController extends Controller
         Log::info('Received chatbot message', ['message' => $userMessage]);
 
         // Fetch all properties and format for RAG
-        $properties = Property::all()->map(function ($property) {
+$properties = Property::all()->map(function ($property) {
             return [
                 'id' => $property->id,
                 'title' => $property->title,
@@ -43,12 +43,13 @@ class ChatbotController extends Controller
             ];
         });
 
+
         $payload = [
             'message' => $userMessage,
             'properties' => $properties,
         ];
 
-        $response = Http::post('http://localhost:8000/chat', $payload);
+        $response = Http::post('http://host.docker.internal:8000/chat', $payload);
 
         if ($response->failed()) {
             Log::error('Chatbot service unavailable', [

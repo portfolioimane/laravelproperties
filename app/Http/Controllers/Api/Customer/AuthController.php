@@ -55,16 +55,20 @@ public function register(Request $request)
             'phone' => $request->role === 'owner' ? $request->phone : null,
         ]);
 
-        
+        // Log the user in immediately after registration
+        Auth::login($user);
 
-        Log::info('User created successfully', ['user_id' => $user->id]);
+        Log::info('User created and logged in successfully', ['user_id' => $user->id]);
+
+        // Return user info, session cookie should be set automatically
+        return response()->json(['user' => $user], 201);
+
     } catch (\Exception $e) {
         Log::error('User creation failed', ['error' => $e->getMessage()]);
         return response()->json(['error' => 'User registration failed'], 500);
     }
-
-    return response()->json(['user' => $user], 201);
 }
+
 
 
 

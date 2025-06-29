@@ -51,7 +51,7 @@ class PropertiesController extends Controller
     // Upload main image
     if ($request->hasFile('image')) {
         $path = $request->file('image')->store('images/properties', 'public');
-        $data['image'] = '/storage/' . $path;
+        $data['image'] = 'storage/' . $path;
         Log::info('Property main image uploaded', ['path' => $path]);
     }
 
@@ -63,7 +63,7 @@ class PropertiesController extends Controller
             $path = $photo->store('images/properties', 'public');
             PhotoGallery::create([
                 'property_id' => $property->id,
-                'photo_url' => '/storage/' . $path,
+                'photo_url' => 'storage/' . $path,
             ]);
         }
     }
@@ -113,7 +113,7 @@ public function update(Request $request, $id)
             Storage::delete('public/' . ltrim($property->image, '/storage/'));
         }
         $path = $request->file('image')->store('images/properties', 'public');
-        $data['image'] = '/storage/' . $path;
+        $data['image'] = 'storage/' . $path;
     }
 
     $property->update($data);
@@ -141,7 +141,7 @@ public function update(Request $request, $id)
             $path = $photo->store('images/properties', 'public');
             PhotoGallery::create([
                 'property_id' => $property->id,
-                'photo_url' => '/storage/' . $path,
+                'photo_url' => 'storage/' . $path,
             ]);
         }
     }
